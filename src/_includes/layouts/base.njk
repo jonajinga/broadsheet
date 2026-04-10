@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="{{ site.language }}" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  {# ── Title ── #}
+  <title>{% if title %}{{ title }} — {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+
+  {# ── Meta Description ── #}
+  <meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}">
+
+  {# ── Open Graph ── #}
+  <meta property="og:type" content="{% if layout == 'article' %}article{% else %}website{% endif %}">
+  <meta property="og:title" content="{% if title %}{{ title }}{% else %}{{ site.title }}{% endif %}">
+  <meta property="og:description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  {# OG image: explicit front-matter image wins; article pages fall back to auto-generated SVG card #}
+  {% if image %}
+    <meta property="og:image" content="{{ site.url }}{{ image }}">
+  {% elif section %}
+    <meta property="og:image" content="{{ site.url }}/og/{{ page.url | ogSlug }}.svg">
+  {% endif %}
+
+  {# ── Twitter Card ── #}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% if title %}{{ title }}{% else %}{{ site.title }}{% endif %}">
+  <meta name="twitter:description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}">
+  {% if section %}
+  <meta name="twitter:image" content="{{ site.url }}/og/{{ page.url | ogSlug }}.svg">
+  {% endif %}
+
+  {# ── Canonical ── #}
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+
+  {# ── RSS Feeds ── #}
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.url }}/feed.xml">
+  {% if authorSlug %}
+  <link rel="alternate" type="application/rss+xml" title="{{ title }} — {{ site.title }}" href="{{ site.url }}/feeds/{{ authorSlug }}.xml">
+  {% endif %}
+
+  {# ── Favicon ── #}
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1a1a1a">
+
+  {# ── Resource Hints ── #}
+  <link rel="dns-prefetch" href="https://fonts.bunny.net">
+  <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+
+  {# ── Fonts ── #}
+  <link rel="stylesheet" href="{{ site.fontsUrl }}" crossorigin>
+
+  {# ── Styles ── #}
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  {# ── BreadcrumbList structured data ── #}
+  {% if page.url != "/" %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+      { "@type": "ListItem", "position": 2, "name": "{% if title %}{{ title }}{% else %}Page{% endif %}", "item": "{{ site.url }}{{ page.url }}" }
+    ]
+  }
+  </script>
+  {% endif %}
+
+  {# ── Site prefix for localStorage keys ── #}
+  <script>window.__PREFIX='{{ site.storagePrefix }}';</script>
+
+  {# ── Inline theme script (prevents flash) ── #}
+  <script>
+    (function(){const k='{{ site.storagePrefix }}-theme',r=document.documentElement;function g(){try{return localStorage.getItem(k)}catch{return null}}function a(t){r.setAttribute('data-theme',t)}a(g()||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))})();
+  </script>
+
+  {# ── OG Article properties (article pages only) ── #}
+  {% if section %}
+  <meta property="article:published_time" content="{{ page.date | isoDate }}">
+  {% if lastUpdated %}<meta property="article:modified_time" content="{{ lastUpdated | isoDate }}">{% endif %}
+  {% if author %}<meta property="article:author" content="{{ site.url }}/author/{{ author | slugify }}/">{% endif %}
+  <meta property="article:section" content="{{ section }}">
+  {% for tag in tags %}<meta property="article:tag" content="{{ tag }}">
+  {% endfor %}
+  {% endif %}
+
+  {% block head %}{% endblock %}
+</head>
+
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="site-wrapper">
+
+    {# ── Breaking Banner (conditional) ── #}
+    {% if breaking %}
+    <div class="breaking-banner" role="alert">
+      <span>Breaking: </span><a href="{{ breaking.url }}">{{ breaking.text }}</a>
+    </div>
+    {% endif %}
+
+    {# ── Masthead ── #}
+    {% include "partials/header.njk" %}
+
+    {# ── Main Content ── #}
+    <main id="main-content" class="site-main">
+      {{ content | safe }}
+    </main>
+
+    {# ── Footer ── #}
+    {% include "partials/footer.njk" %}
+
+  </div>{# /.site-wrapper #}
+
+  {# ── Scripts ── #}
+  <script src="/assets/js/theme.js"></script>
+  <script src="/assets/js/drawer.js" defer></script>
+  <script src="/assets/js/smart-header.js" defer></script>
+  <script src="/assets/js/search.js" type="module"></script>
+  <script src="/assets/js/subscribe.js" defer></script>
+  {% block scripts %}{% endblock %}
+
+  {# ── Data Export/Import ── #}
+  <script>
+  (function(){
+    var eb=document.getElementById('data-export-btn');
+    var ib=document.getElementById('data-import-btn');
+    if(eb)eb.addEventListener('click',function(){
+      var d={};for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k)d[k]=localStorage.getItem(k);}
+      var b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+      var u=URL.createObjectURL(b);var a=document.createElement('a');
+      a.href=u;a.download='tft-backup.json';a.click();URL.revokeObjectURL(u);
+    });
+    if(ib)ib.addEventListener('click',function(){
+      var i=document.createElement('input');i.type='file';i.accept='.json';
+      i.onchange=function(){var r=new FileReader();r.onload=function(){
+        try{var d=JSON.parse(r.result);Object.keys(d).forEach(function(k){localStorage.setItem(k,d[k]);});
+        alert('Imported '+Object.keys(d).length+' items.');}catch(e){alert('Invalid file.');}
+      };r.readAsText(i.files[0]);};i.click();
+    });
+  })();
+  </script>
+
+  {# ── Service Worker Registration ── #}
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  </script>
+
+  {# ── GTranslate (dropdown — renders inside nav drawer) ── #}
+  {% if site.gtranslate %}
+  <script>
+    window.gtranslateSettings = {
+      "default_language": "{{ site.language }}",
+      "languages": ["en","af","sq","am","ar","hy","az","eu","be","bn","bs","bg","ca","ceb","zh-CN","zh-TW","co","hr","cs","da","nl","eo","et","fi","fr","fy","gl","ka","de","el","gu","ht","ha","haw","he","hi","hmn","hu","is","ig","id","ga","it","ja","jv","kn","kk","km","rw","ko","ku","ky","lo","la","lv","lt","lb","mk","mg","ms","ml","mt","mi","mr","mn","my","ne","no","ny","or","ps","fa","pl","pt","pa","ro","ru","sm","gd","sr","st","sn","sd","si","sk","sl","so","es","su","sw","sv","tl","tg","ta","tt","te","th","tr","tk","uk","ur","ug","uz","vi","cy","xh","yi","yo","zu"],
+      "wrapper_selector": ".gtranslate_wrapper",
+      "flag_size": 20,
+      "flag_style": "3d",
+      "alt_flags": { "en": "usa" }
+    };
+  </script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
+  {% endif %}
+
+  {# ── Analytics ── #}
+  {% if site.analytics and site.analytics.websiteId %}
+  <script defer src="{{ site.analytics.scriptUrl }}" data-website-id="{{ site.analytics.websiteId }}"></script>
+  {% endif %}
+</body>
+</html>

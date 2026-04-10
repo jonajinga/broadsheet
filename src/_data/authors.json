@@ -1,0 +1,14 @@
+{
+  "editor": {
+    "name": "Your Name",
+    "slug": "editor",
+    "bio": "Editor and founder.",
+    "role": "Editor"
+  },
+  "staff": {
+    "name": "Staff",
+    "slug": "staff",
+    "bio": "Editorial staff.",
+    "role": "Staff"
+  }
+}
