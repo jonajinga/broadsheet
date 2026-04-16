@@ -1,7 +1,30 @@
 {
-  "name": "freethinking-times",
+  "name": "broadsheet",
   "version": "1.0.0",
-  "description": "The Freethinking Times — Independent journalism built on Eleventy",
+  "description": "Broadsheet — A complete, open-source publication system built on Eleventy",
+  "license": "MIT",
+  "author": "Jon Ajinga <jonajinga@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonajinga/broadsheet.git"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/broadsheet"
+  },
+  "keywords": [
+    "eleventy",
+    "11ty",
+    "static-site",
+    "publication",
+    "journalism",
+    "newspaper",
+    "magazine",
+    "blog",
+    "template",
+    "open-source",
+    "cms"
+  ],
   "scripts": {
     "start": "npx @11ty/eleventy --quiet && npx pagefind --site _site --output-path _site/pagefind && npx @11ty/eleventy --serve --quiet",
     "dev": "npx @11ty/eleventy --quiet && npx pagefind --site _site --output-path _site/pagefind && npx @11ty/eleventy --serve --quiet",
