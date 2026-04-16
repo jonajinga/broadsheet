@@ -1,5 +1,5 @@
 /**
- * The Freethinking Times — Theme System
+ * Broadsheet — Theme System
  * Handles dark/light mode with no flash on load.
  * This script MUST be inlined in <head> to prevent FOUC.
  */
@@ -24,6 +24,35 @@
   // Apply theme immediately (before render)
   const stored = getStoredTheme();
   applyTheme(stored || getSystemTheme());
+
+  // Apply background preset immediately (prevent flash)
+  try {
+    const bg = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-bg');
+    if (bg && bg !== 'default') root.setAttribute('data-gs-bg', bg);
+
+    const gsFont = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-font');
+    if (gsFont && gsFont !== 'default') {
+      root.setAttribute('data-gs-font', gsFont);
+      // Preload web fonts
+      const wf = {inter:'inter:wght@400;600;700',merriweather:'merriweather:wght@400;700',roboto:'roboto:wght@400;700',opensans:'open-sans:wght@400;600;700',baskerville:'libre-baskerville:wght@400;700',crimson:'crimson-pro:wght@400;600;700',ibmplex:'ibm-plex-serif:wght@400;600;700',literata:'literata:wght@400;600;700',atkinson:'atkinson-hyperlegible:wght@400;700'};
+      if (wf[gsFont]) { const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.bunny.net/css?family='+wf[gsFont]+'&display=swap';document.head.appendChild(l); }
+    }
+
+    const gsFontSize = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-font-size');
+    if (gsFontSize && parseInt(gsFontSize) > 0) root.style.fontSize = gsFontSize + 'px';
+
+    const gsSpacing = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-spacing');
+    if (gsSpacing && gsSpacing !== 'normal') {
+      const map = { tight: '1.3', relaxed: '1.8' };
+      if (map[gsSpacing]) root.style.lineHeight = map[gsSpacing];
+    }
+
+    const gsWordspace = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-wordspace');
+    if (gsWordspace && gsWordspace !== 'normal') {
+      const wsMap = { wide: '0.12em', wider: '0.25em' };
+      if (wsMap[gsWordspace]) root.style.wordSpacing = wsMap[gsWordspace];
+    }
+  } catch (e) {}
 
   // After DOM is ready, wire up the toggle button
   document.addEventListener('DOMContentLoaded', function () {

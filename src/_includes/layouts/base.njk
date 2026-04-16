@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ site.language }}" data-theme="light">
+<html lang="{{ site.language }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,7 +53,10 @@
   <link rel="stylesheet" href="{{ site.fontsUrl }}" crossorigin>
 
   {# ── Styles ── #}
-  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/main.css?v={{ buildTime }}">
+
+  {# ── Theme (must be in head to prevent flash) ── #}
+  <script src="/assets/js/theme.js"></script>
 
   {# ── BreadcrumbList structured data ── #}
   {% if page.url != "/" %}
@@ -115,12 +118,39 @@
   </div>{# /.site-wrapper #}
 
   {# ── Scripts ── #}
-  <script src="/assets/js/theme.js"></script>
   <script src="/assets/js/drawer.js" defer></script>
   <script src="/assets/js/smart-header.js" defer></script>
-  <script src="/assets/js/search.js" type="module"></script>
+  <script src="/assets/js/search.js" defer></script>
   <script src="/assets/js/subscribe.js" defer></script>
+  <script src="/assets/js/global-settings.js" defer></script>
+  <script src="/assets/js/spa-nav.js" defer></script>
+  <script src="https://www.youtube.com/iframe_api" defer></script>
+  <script src="/assets/js/music-player.js" defer></script>
   {% block scripts %}{% endblock %}
+
+  {# ── Glossary tooltips (Tippy.js) ── #}
+  <script>
+  window.__glossaryTerms=[{% for entry in collections.glossary %}{ term:"{{ entry.data.title | escape }}", def:"{{ entry.data.description | escape }}", url:"{{ entry.url }}" }{% if not loop.last %},{% endif %}{% endfor %}];
+  </script>
+  <script src="/assets/js/popper.min.js" defer></script>
+  <script src="/assets/js/tippy.min.js" defer></script>
+  <script src="/assets/js/glossary-tips.js" defer></script>
+
+  {# ── hCaptcha + dictation for Web3Forms pages ── #}
+  {% if site.forms and site.forms.accessKey %}
+  <script src="https://web3forms.com/client/script.js" async defer></script>
+  <script src="/assets/js/dictation.js" defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.w3f').forEach(function(f){
+      f.addEventListener('submit',function(){
+        var btn=f.querySelector('.w3f__submit');
+        if(btn){btn.disabled=true;btn.textContent='Submitting\u2026';}
+      });
+    });
+  });
+  </script>
+  {% endif %}
 
   {# ── Data Export/Import ── #}
   <script>
@@ -142,6 +172,9 @@
     });
   })();
   </script>
+
+  {# ── Instant Page (prefetch on hover) ── #}
+  <script src="/assets/js/instant.page.js" type="module" defer></script>
 
   {# ── Service Worker Registration ── #}
   <script>

@@ -68,40 +68,6 @@
           </svg>
         </a>
 
-        {# Contact #}
-        <a href="/contact/"
-           class="masthead__icon-btn"
-           aria-label="Contact us"
-           title="Contact us">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </a>
-
-        {# RSS — follow via feed reader #}
-        <a href="/feed.xml"
-           class="masthead__icon-btn"
-           aria-label="RSS feed"
-           title="RSS feed"
-           type="application/rss+xml">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 11a9 9 0 0 1 9 9"/>
-            <path d="M4 4a16 16 0 0 1 16 16"/>
-            <circle cx="5" cy="19" r="1" fill="currentColor"/>
-          </svg>
-        </a>
-
-        {# Support — help keep us independent #}
-        <a href="/support/"
-           class="masthead__icon-btn"
-           aria-label="Support us"
-           title="Support us">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </a>
-
         {# Surprise Me — random article #}
         <a href="/random/"
            class="masthead__icon-btn"
@@ -115,22 +81,119 @@
           </svg>
         </a>
 
-        {# Dark mode — set-and-forget preference #}
-        <button
-          class="masthead__icon-btn js-only"
-          id="theme-toggle"
-          aria-label="Toggle dark mode"
-          type="button"
-          title="Toggle dark mode">
-          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-        </button>
+        {# Display settings — global (includes language, theme, font, spacing) #}
+        <div class="masthead__settings-wrap" style="position:relative;">
+          <button
+            class="masthead__icon-btn js-only"
+            id="global-settings-btn"
+            type="button"
+            aria-label="Display settings"
+            title="Display settings"
+            onclick="var p=document.getElementById('global-settings-panel');p.hidden=!p.hidden;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+              <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+              <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+            </svg>
+          </button>
+        </div>
+
 
       </div>
+    </div>
+
+    {# Global settings panel — outside masthead__actions so it's accessible on mobile via drawer button #}
+    <div id="global-settings-panel" class="global-settings-panel" hidden>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);">
+        <p style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;color:var(--color-ink);margin:0;">Display Settings</p>
+        <button type="button" aria-label="Close" style="background:none;border:none;color:var(--color-ink-faint);cursor:pointer;padding:var(--space-1);line-height:1;" onclick="this.closest('.global-settings-panel').hidden=true;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="rs-group">
+        <label class="rs-label" for="gs-font-size">Text size</label>
+        <div class="rs-size-row">
+          <span class="rs-size-a rs-small" aria-hidden="true">A</span>
+          <input type="range" class="rs-slider" id="gs-font-size" min="14" max="24" step="1" value="16" aria-label="Font size">
+          <span class="rs-size-a rs-large" aria-hidden="true">A</span>
+        </div>
+      </div>
+      <div class="rs-group">
+        <label class="rs-label" for="gs-font-select">Font</label>
+        <select id="gs-font-select" class="rs-select">
+          <optgroup label="Site fonts">
+            <option value="default">Source Serif (default)</option>
+            <option value="sans">DM Sans</option>
+            <option value="lora">Lora</option>
+            <option value="playfair">Playfair Display</option>
+          </optgroup>
+          <optgroup label="Serif">
+            <option value="georgia">Georgia</option>
+            <option value="palatino">Palatino</option>
+            <option value="times">Times New Roman</option>
+            <option value="garamond">Garamond</option>
+            <option value="bookman">Bookman Old Style</option>
+          </optgroup>
+          <optgroup label="Sans-serif">
+            <option value="system">System default</option>
+            <option value="arial">Arial / Helvetica</option>
+            <option value="verdana">Verdana</option>
+            <option value="trebuchet">Trebuchet MS</option>
+            <option value="tahoma">Tahoma</option>
+            <option value="century">Century Gothic</option>
+          </optgroup>
+          <optgroup label="Monospace">
+            <option value="mono">SF Mono / Consolas</option>
+            <option value="courier">Courier New</option>
+            <option value="lucida">Lucida Console</option>
+          </optgroup>
+          <optgroup label="Web fonts (loaded on demand)">
+            <option value="inter">Inter</option>
+            <option value="merriweather">Merriweather</option>
+            <option value="roboto">Roboto</option>
+            <option value="opensans">Open Sans</option>
+            <option value="baskerville">Libre Baskerville</option>
+            <option value="crimson">Crimson Pro</option>
+            <option value="ibmplex">IBM Plex Serif</option>
+            <option value="literata">Literata</option>
+            <option value="atkinson">Atkinson Hyperlegible</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label">Line spacing</p>
+        <div class="rs-btngroup" role="group">
+          <button class="rs-btn" data-gs-spacing="tight" type="button">Tight</button>
+          <button class="rs-btn is-active" data-gs-spacing="normal" type="button">Normal</button>
+          <button class="rs-btn" data-gs-spacing="relaxed" type="button">Relaxed</button>
+        </div>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label">Word spacing</p>
+        <div class="rs-btngroup" role="group">
+          <button class="rs-btn is-active" data-gs-wordspace="normal" type="button">Normal</button>
+          <button class="rs-btn" data-gs-wordspace="wide" type="button">Wide</button>
+          <button class="rs-btn" data-gs-wordspace="wider" type="button">Wider</button>
+        </div>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label">Theme</p>
+        <div class="rs-btngroup" role="group" id="gs-theme-group">
+          <button class="rs-btn is-active" data-gs-theme="auto" type="button">Auto</button>
+          <button class="rs-btn" data-gs-theme="light" type="button">Light</button>
+          <button class="rs-btn" data-gs-theme="sepia" type="button">Sepia</button>
+          <button class="rs-btn" data-gs-theme="cream" type="button">Cream</button>
+          <button class="rs-btn" data-gs-theme="dark" type="button">Dark</button>
+        </div>
+      </div>
+      {% if site.gtranslate %}
+      <div class="rs-group">
+        <p class="rs-label">Language</p>
+        <div class="gtranslate_wrapper"></div>
+      </div>
+      {% endif %}
+      <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetGlobalSettings)window.__resetGlobalSettings();">Reset to defaults</button>
     </div>
 
     {# ── Section Nav ── #}
@@ -139,7 +202,7 @@
         <ul class="site-nav__list" role="list">
           {% for item in site.nav %}
           {% set sectionItems = collections[item.collection] if item.collection %}
-          {% set hasDropdown = item.type == "projects" or item.type == "games" or item.type == "library" or item.type == "quotes" or (sectionItems and sectionItems.length) %}
+          {% set hasDropdown = item.type == "library" or item.type == "more" or (sectionItems and sectionItems.length) %}
           <li class="site-nav__item{% if hasDropdown %} site-nav__item--has-dropdown{% endif %}">
             <a
               class="site-nav__link"
@@ -156,10 +219,128 @@
       {# ── Nav Dropdowns — siblings of .site-nav__inner so they escape overflow:hidden ── #}
       {% for item in site.nav %}
       {% set sectionItems = collections[item.collection] if item.collection %}
-      {% set hasDropdown = item.type == "projects" or item.type == "games" or item.type == "library" or item.type == "quotes" or (sectionItems and sectionItems.length) %}
+      {% set hasDropdown = item.type == "library" or item.type == "more" or (sectionItems and sectionItems.length) %}
       {% if hasDropdown %}
       <div class="nav-dropdown" id="dropdown-{{ item.key }}" aria-label="{{ item.label }}">
-        {% if item.type == "library" %}
+        {% if item.type == "more" %}
+          <div class="nav-mega">
+            <div class="nav-mega__col">
+              <p class="nav-mega__heading">Explore</p>
+              <a href="/library/" class="nav-mega__link">
+                <span class="nav-mega__title">Public Domain Library</span>
+                <span class="nav-mega__desc">Full texts from the freethought tradition</span>
+              </a>
+              <a href="/quotes/" class="nav-mega__link">
+                <span class="nav-mega__title">Quotes</span>
+                <span class="nav-mega__desc">Curated freethought quotes</span>
+              </a>
+              <a href="/videos/" class="nav-mega__link">
+                <span class="nav-mega__title">Videos</span>
+                <span class="nav-mega__desc">Lectures, debates, and documentaries</span>
+              </a>
+              <a href="/timeline/" class="nav-mega__link">
+                <span class="nav-mega__title">Timeline</span>
+                <span class="nav-mega__desc">2,400 years of freethought history</span>
+              </a>
+            </div>
+            <div class="nav-mega__col">
+              <p class="nav-mega__heading">Projects</p>
+              <a href="/glossary/" class="nav-mega__link">
+                <span class="nav-mega__title">Glossary</span>
+                <span class="nav-mega__desc">Philosophical terms and definitions</span>
+              </a>
+              <a href="/bookshelf/" class="nav-mega__link">
+                <span class="nav-mega__title">Bookshelf</span>
+                <span class="nav-mega__desc">Reading recommendations</span>
+              </a>
+              <a href="/thought-experiments/" class="nav-mega__link">
+                <span class="nav-mega__title">Thought Experiments</span>
+                <span class="nav-mega__desc">Classic experiments examined</span>
+              </a>
+              <a href="/trials/" class="nav-mega__link">
+                <span class="nav-mega__title">Trials of Thought</span>
+                <span class="nav-mega__desc">Landmark trials of ideas</span>
+              </a>
+              <a href="/games/" class="nav-mega__link">
+                <span class="nav-mega__title">Games</span>
+                <span class="nav-mega__desc">Trivia, puzzles, and word games</span>
+              </a>
+            </div>
+            <div class="nav-mega__col">
+              <p class="nav-mega__heading">Community</p>
+              <a href="/community/" class="nav-mega__link">
+                <span class="nav-mega__title">Community Hub</span>
+                <span class="nav-mega__desc">Organizations worldwide</span>
+              </a>
+              <a href="/events/" class="nav-mega__link">
+                <span class="nav-mega__title">Events</span>
+                <span class="nav-mega__desc">Conferences and meetups</span>
+              </a>
+              <a href="/resources/" class="nav-mega__link">
+                <span class="nav-mega__title">Resources</span>
+                <span class="nav-mega__desc">Education, legal, and support</span>
+              </a>
+              <a href="/contribute/" class="nav-mega__link">
+                <span class="nav-mega__title">Contribute</span>
+                <span class="nav-mega__desc">Support and participate</span>
+              </a>
+              <a href="/newsletter/" class="nav-mega__link">
+                <span class="nav-mega__title">Newsletter</span>
+                <span class="nav-mega__desc">Free, no tracking</span>
+              </a>
+            </div>
+            <div class="nav-mega__col">
+              <p class="nav-mega__heading">About</p>
+              <a href="/about/" class="nav-mega__link">
+                <span class="nav-mega__title">About Us</span>
+                <span class="nav-mega__desc">What we are and why</span>
+              </a>
+              <a href="/contact/" class="nav-mega__link">
+                <span class="nav-mega__title">Contact</span>
+                <span class="nav-mega__desc">Get in touch</span>
+              </a>
+              <a href="/support/" class="nav-mega__link">
+                <span class="nav-mega__title">Support</span>
+                <span class="nav-mega__desc">Keep us independent</span>
+              </a>
+              <a href="/features/" class="nav-mega__link">
+                <span class="nav-mega__title">Features</span>
+                <span class="nav-mega__desc">What this site can do</span>
+              </a>
+              <a href="/open-source/" class="nav-mega__link">
+                <span class="nav-mega__title">Open Source</span>
+                <span class="nav-mega__desc">Fork our codebase</span>
+              </a>
+            </div>
+            <div class="nav-mega__col">
+              <p class="nav-mega__heading">Reader Tools</p>
+              <a href="/search/" class="nav-mega__link">
+                <span class="nav-mega__title">Search</span>
+                <span class="nav-mega__desc">Full search page</span>
+              </a>
+              <a href="/start-here/" class="nav-mega__link">
+                <span class="nav-mega__title">Start Here</span>
+                <span class="nav-mega__desc">New to the site?</span>
+              </a>
+              <a href="/notes/" class="nav-mega__link">
+                <span class="nav-mega__title">Notes & Highlights</span>
+                <span class="nav-mega__desc">Your saved annotations</span>
+              </a>
+              <a href="/reading-list/" class="nav-mega__link">
+                <span class="nav-mega__title">Reading List</span>
+                <span class="nav-mega__desc">Saved articles</span>
+              </a>
+              <a href="/reader/" class="nav-mega__link">
+                <span class="nav-mega__title">RSS Reader</span>
+                <span class="nav-mega__desc">Freethought feeds</span>
+              </a>
+              <a href="/archives/" class="nav-mega__link">
+                <span class="nav-mega__title">Archives</span>
+                <span class="nav-mega__desc">All articles by date</span>
+              </a>
+            </div>
+          </div>
+        {% elif item.type == "library" %}
           {% for w in library.works %}
             {% if w.featured and not w.parentWork %}
               <a href="/library/{{ w.slug }}/" class="nav-dropdown__item">
@@ -171,30 +352,6 @@
           <a href="/library/subjects/" class="nav-dropdown__footer">Browse by Subject</a>
           <a href="/library/authors/" class="nav-dropdown__footer">Browse by Author</a>
           <a href="/library/" class="nav-dropdown__footer">View full library →</a>
-        {% elif item.type == "projects" %}
-          {% for project in projects.index %}
-          <a href="{{ project.url }}" class="nav-dropdown__item">
-            <span class="nav-dropdown__title">{{ project.title }}</span>
-            <span class="nav-dropdown__desc">{{ project.shortDescription }}</span>
-          </a>
-          {% endfor %}
-          <a href="/projects/" class="nav-dropdown__footer">View all projects →</a>
-        {% elif item.type == "games" %}
-          {% for game in games %}
-          <a href="{{ game.url }}" class="nav-dropdown__item">
-            <span class="nav-dropdown__title">{{ game.title }}</span>
-            <span class="nav-dropdown__desc">{{ game.description }}</span>
-          </a>
-          {% endfor %}
-          <a href="/games/" class="nav-dropdown__footer">View all games →</a>
-        {% elif item.type == "quotes" %}
-          {% for q in quotes | limit(3) %}
-          <a href="/quotes/#q{{ loop.index }}" class="nav-dropdown__item">
-            <span class="nav-dropdown__desc">&ldquo;{{ q.quote }}&rdquo;</span>
-            <span class="nav-dropdown__title">{{ q.author }}</span>
-          </a>
-          {% endfor %}
-          <a href="/quotes/" class="nav-dropdown__footer">View all quotes →</a>
         {% else %}
           {% for article in sectionItems | limit(4) %}
           <a href="{{ article.url }}" class="nav-dropdown__item">
@@ -211,6 +368,41 @@
 
   </div>{# /.container #}
 </header>
+
+{# ── Daily Quote Bar (homepage only) ── #}
+{% if page.url == "/" %}
+<div class="quote-bar" id="quote-bar" data-pagefind-ignore>
+  <a class="quote-bar__link" href="/quotes/showcase/" title="View quotes showcase">
+    <span class="quote-bar__text" id="quote-bar-text"></span>
+    <span class="quote-bar__author" id="quote-bar-author"></span>
+  </a>
+</div>
+<script>
+(function(){
+  var quotes={{ quotes | dump | safe }};
+  if(!quotes||!quotes.length)return;
+  // Shuffle quotes randomly on every page load
+  for(var i=quotes.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=quotes[i];quotes[i]=quotes[j];quotes[j]=tmp;}
+  var idx=0;
+  var t=document.getElementById('quote-bar-text');
+  var a=document.getElementById('quote-bar-author');
+  var bar=document.getElementById('quote-bar');
+  if(!t||!a)return;
+  function show(i){
+    idx=((i%quotes.length)+quotes.length)%quotes.length;
+    var q=quotes[idx];
+    bar.style.opacity='0';
+    setTimeout(function(){
+      t.textContent='\u201c'+q.quote+'\u201d';
+      a.textContent='\u2014 '+q.author;
+      bar.style.opacity='1';
+    },400);
+  }
+  show(0);
+  setInterval(function(){show(idx+1);},10000);
+})();
+</script>
+{% endif %}
 
 {# ── Search Modal ── (lives outside header for z-index stacking) #}
 <div class="search-overlay js-only" id="search-overlay" aria-hidden="true" onclick="var m=document.getElementById('search-modal'),o=this;m.classList.remove('is-open');m.setAttribute('aria-hidden','true');o.classList.remove('is-open');document.body.style.overflow='';document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';"></div>
@@ -239,6 +431,15 @@
       aria-controls="search-results"
       aria-autocomplete="list">
     <button
+      class="search-modal__voice js-only"
+      id="voice-search-btn"
+      type="button"
+      aria-label="Search by voice"
+      title="Search by voice"
+      hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+    </button>
+    <button
       class="search-modal__close"
       id="search-close"
       type="button"
@@ -254,6 +455,8 @@
     <button class="search-filter-btn" data-filter-section="{{ section.label }}" type="button">{{ section.label }}</button>
     {% endfor %}
     <button class="search-filter-btn" data-filter-section="Quotes" type="button">Quotes</button>
+    <button class="search-filter-btn" data-filter-section="Videos" type="button">Videos</button>
+    <button class="search-filter-btn" data-filter-section="Timeline" type="button">Timeline</button>
   </div>
 
   <div class="search-modal__results" id="search-results" role="listbox" aria-label="Search results">
@@ -279,92 +482,71 @@
 
   <div class="nav-drawer__header">
     <span class="nav-drawer__label">{{ site.title }}</span>
-    <button class="nav-drawer__close" id="nav-drawer-close" type="button" aria-label="Close navigation menu" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.getElementById('nav-drawer-toggle').setAttribute('aria-expanded','false');document.body.style.overflow='';">✕</button>
+    <button class="nav-drawer__close" id="nav-drawer-close" type="button" aria-label="Close navigation menu" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.getElementById('nav-drawer-toggle').setAttribute('aria-expanded','false');document.body.style.overflow='';">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
 
+  {# ── Sections ── #}
+  <p class="nav-drawer__section-label">Sections</p>
   <ul class="nav-drawer__list" role="list">
     {% for item in site.nav %}
-    <li>
-      <a
-        class="nav-drawer__link"
-        href="{{ item.url }}"
-        {% if page.url == item.url %}aria-current="page"{% endif %}>
-        {{ item.label }}
-      </a>
-    </li>
+    {% if item.collection %}
+    <li><a class="nav-drawer__link nav-drawer__link--primary" href="{{ item.url }}" {% if page.url == item.url %}aria-current="page"{% endif %}>{{ item.label }}</a></li>
+    {% endif %}
     {% endfor %}
   </ul>
 
   <div class="nav-drawer__divider"></div>
 
+  {# ── Projects ── #}
+  <p class="nav-drawer__section-label">Projects</p>
   <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/about/">About</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/masthead/">Masthead</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/ethics/">Ethics Policy</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/submit/">Submit a Piece</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/start-here/">Start Here</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/archives/">Archives</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/editions/">Editions</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/corrections/">Corrections</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/resources/">Freethought Resources</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/reader/">RSS Reader</a></li>
+    <li><a class="nav-drawer__link" href="/library/">Public Domain Library</a></li>
+    <li><a class="nav-drawer__link" href="/quotes/">Freethought Quotes</a></li>
+    <li><a class="nav-drawer__link" href="/videos/">Freethought Videos</a></li>
+    <li><a class="nav-drawer__link" href="/timeline/">Freethought Timeline</a></li>
+    <li><a class="nav-drawer__link" href="/resources/">Freethought Resources</a></li>
+    <li><a class="nav-drawer__link" href="/glossary/">Freethought Glossary</a></li>
+    <li><a class="nav-drawer__link" href="/bookshelf/">Freethinker's Bookshelf</a></li>
+    <li><a class="nav-drawer__link" href="/thought-experiments/">Thought Experiments</a></li>
+    <li><a class="nav-drawer__link" href="/trials/">Trials of Thought</a></li>
+    <li><a class="nav-drawer__link" href="/music/">Freethought Music</a></li>
+    <li><a class="nav-drawer__link" href="/gallery/">Gallery</a></li>
+    <li><a class="nav-drawer__link" href="/games/">Games</a></li>
   </ul>
 
-  {# ── Quick actions (icons only, duplicated from masthead for mobile) ── #}
-  <div class="nav-drawer__actions">
-    <button class="nav-drawer__action-btn js-only" type="button" aria-label="Search" title="Search" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.body.style.overflow='';var m=document.getElementById('search-modal'),so=document.getElementById('search-overlay');if(m){m.classList.add('is-open');m.setAttribute('aria-hidden','false');so&&so.classList.add('is-open');document.body.style.overflow='hidden';var i=document.getElementById('search-input');i&&i.focus();}">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <div class="nav-drawer__divider"></div>
+
+  {# ── Community ── #}
+  <p class="nav-drawer__section-label">Community</p>
+  <ul class="nav-drawer__list" role="list">
+    <li><a class="nav-drawer__link" href="/community/">Community Hub</a></li>
+    <li><a class="nav-drawer__link" href="/events/">Events Calendar</a></li>
+    <li><a class="nav-drawer__link" href="/newsletter/">Newsletter</a></li>
+    <li><a class="nav-drawer__link" href="/contribute/">Contribute</a></li>
+    <li><a class="nav-drawer__link" href="/submit/">Submit</a></li>
+  </ul>
+
+  <div class="nav-drawer__divider"></div>
+
+  {# ── About & more ── #}
+  <ul class="nav-drawer__list" role="list">
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/about/">About</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/contact/">Contact</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/reader-tools/">Reader Tools</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/transparency/">Transparency</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/legal/">Legal</a></li>
+  </ul>
+
+  {# ── Bottom toolbar ── #}
+  <div class="nav-drawer__toolbar">
+    <a href="/notes/" title="Notes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></a>
+    <a href="/reading-list/" title="Reading list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></a>
+    <a href="/random/" title="Surprise me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></a>
+    <button type="button" title="Display settings" class="js-only" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay'),t=document.getElementById('nav-drawer-toggle');if(d){d.classList.remove('is-open');d.setAttribute('aria-hidden','true');}if(o)o.classList.remove('is-open');if(t)t.setAttribute('aria-expanded','false');document.body.style.overflow='';setTimeout(function(){var p=document.getElementById('global-settings-panel');if(p)p.hidden=false;},150);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
     </button>
-    <a class="nav-drawer__action-btn" href="/notes/" aria-label="Notes & highlights" title="Notes & highlights">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-    </a>
-    <a class="nav-drawer__action-btn" href="/reading-list/" aria-label="Reading list" title="Reading list">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-    </a>
-    <a class="nav-drawer__action-btn" href="/random/" aria-label="Surprise me" title="Surprise me">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-    </a>
-    <a class="nav-drawer__action-btn" href="/contact/" aria-label="Contact us" title="Contact us">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-    </a>
-    <a class="nav-drawer__action-btn" href="/feed.xml" aria-label="RSS feed" title="RSS feed">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor"/></svg>
-    </a>
-    <button class="nav-drawer__action-btn js-only" type="button" aria-label="Toggle dark mode" title="Toggle dark mode" onclick="var t=document.getElementById('theme-toggle');if(t)t.click();">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    </button>
-    <a class="nav-drawer__action-btn nav-drawer__action-btn--heart" href="/support/" aria-label="Support us" title="Support us">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    </a>
   </div>
-
-  {# ── Bottom sections (all use sidebar-widget + subscribe-block--sidebar style) ── #}
-
-  <div style="margin:0 var(--space-5);">
-    {% set subscribeVariant = "sidebar" %}
-    {% include "partials/subscribe.njk" %}
-  </div>
-
-  <div class="sidebar-widget subscribe-block--sidebar" style="margin:var(--space-4) var(--space-5);">
-    <div style="display:flex;gap:0;align-items:stretch;">
-      <div style="flex:1;min-width:0;padding-right:var(--space-3);">
-        <p class="sidebar-widget__title"><a href="/language/" style="color:var(--color-link);text-decoration:underline;text-underline-offset:2px;">Language</a></p>
-        <div class="gtranslate_wrapper"></div>
-      </div>
-      <div style="width:2px;background:var(--color-accent);flex-shrink:0;border-radius:1px;"></div>
-      <div style="flex:1;min-width:0;padding-left:var(--space-3);">
-        <p class="sidebar-widget__title"><a href="/your-data/" style="color:var(--color-link);text-decoration:underline;text-underline-offset:2px;">Your Data</a></p>
-        <div style="display:flex;gap:var(--space-2);">
-          <button class="nav-drawer__action-btn" type="button" id="data-export-btn" aria-label="Export all data" title="Export">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          </button>
-          <button class="nav-drawer__action-btn" type="button" id="data-import-btn" aria-label="Import data" title="Import">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
 </nav>

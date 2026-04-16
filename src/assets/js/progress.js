@@ -153,35 +153,126 @@
       var ttsText      = '';
 
       /* — Voice loader — */
+      var voicesLoaded = false;
       function loadVoices() {
         var voices = window.speechSynthesis.getVoices();
+        if (!voices.length) return; // not ready yet — wait for onvoiceschanged
+        if (!voiceSelect) return;
+
+        // Filter to English voices, prefer network over offline
         var list = voices.filter(function (v) { return v.lang.startsWith('en'); });
         if (!list.length) list = voices;
-        if (!voiceSelect) return;
-        if (list.length <= 1) { voiceSelect.hidden = true; return; }
+        list.sort(function (a, b) {
+          // Network voices first, then alphabetical
+          if (a.localService !== b.localService) return a.localService ? 1 : -1;
+          return a.name.localeCompare(b.name);
+        });
+
+        if (list.length <= 1) {
+          voiceSelect.hidden = true;
+          if (list.length === 1) ttsVoice = list[0];
+          return;
+        }
+
         var saved = localStorage.getItem(_p + '-tts-voice');
         voiceSelect.innerHTML = '';
+        var foundSaved = false;
         list.forEach(function (v) {
           var opt = document.createElement('option');
           opt.value = v.name;
-          opt.textContent = v.name;
-          if (v.name === saved) { opt.selected = true; ttsVoice = v; }
+          // Show a cleaner label: name + (local) indicator
+          var label = v.name.replace(/\s*\(.*?\)\s*/g, ' ').trim();
+          if (v.localService) label += ' (offline)';
+          opt.textContent = label;
+          if (saved && v.name === saved) { opt.selected = true; ttsVoice = v; foundSaved = true; }
           voiceSelect.appendChild(opt);
         });
+
+        // If no saved voice, select the first one as default
+        if (!foundSaved) {
+          ttsVoice = list[0];
+          voiceSelect.value = list[0].name;
+        }
+
+        voiceSelect.hidden = false;
+        voicesLoaded = true;
       }
-      window.speechSynthesis.onvoiceschanged = loadVoices;
+
+      // Chrome loads voices async — onvoiceschanged fires when ready
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+      }
       loadVoices();
+
+      // Fallback: retry after a short delay (some mobile browsers need this)
+      if (!voicesLoaded) {
+        setTimeout(loadVoices, 100);
+        setTimeout(loadVoices, 500);
+        setTimeout(loadVoices, 1000);
+      }
+
+      /* — TTS highlight tracking — */
+      var ttsHighlightEl = null;
+
+      function clearTtsHighlight() {
+        if (ttsHighlightEl) {
+          ttsHighlightEl.classList.remove('tts-word-active');
+          ttsHighlightEl = null;
+        }
+        document.querySelectorAll('.tts-word-active').forEach(function (el) {
+          el.classList.remove('tts-word-active');
+        });
+      }
 
       /* — Helpers — */
       function buildUtterance(text) {
         var utt = new SpeechSynthesisUtterance(text);
         utt.rate  = ttsRate;
         utt.voice = ttsVoice;
-        utt.onend = stopTts;
+        utt.onend = function () { clearTtsHighlight(); stopTts(); };
+
+        // Synced highlighting via onboundary (Chrome, Edge)
+        utt.onboundary = function (e) {
+          if (e.name !== 'word') return;
+          clearTtsHighlight();
+          var charIdx = e.charIndex;
+          var wordLen = e.charLength || 1;
+          // Find the text node at this character offset in article body
+          var body = document.querySelector('.article-body');
+          if (!body) return;
+          var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null, false);
+          var offset = 0;
+          var node;
+          while ((node = walker.nextNode())) {
+            var len = node.nodeValue.length;
+            if (offset + len > charIdx) {
+              // Found the node — find the word
+              var localIdx = charIdx - offset;
+              var range = document.createRange();
+              try {
+                range.setStart(node, localIdx);
+                range.setEnd(node, Math.min(localIdx + wordLen, len));
+                var span = document.createElement('span');
+                span.className = 'tts-word-active';
+                range.surroundContents(span);
+                ttsHighlightEl = span;
+                // Auto-scroll to keep word visible
+                var rect = span.getBoundingClientRect();
+                if (rect.top < 80 || rect.bottom > window.innerHeight - 80) {
+                  span.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                }
+              } catch (ex) {}
+              break;
+            }
+            offset += len;
+          }
+        };
+
         return utt;
       }
 
       function stopTts() {
+        clearTtsHighlight();
         window.speechSynthesis.cancel();
         ttsSpeaking = false;
         ttsPaused   = false;
@@ -199,24 +290,39 @@
         b.classList.toggle('is-active', parseFloat(b.dataset.rate) === ttsRate);
       });
 
-      /* — Main button: start / emergency stop — */
+      /* — Main button: show controls (first click) / stop (while speaking) — */
       ttsBtn.addEventListener('click', function () {
         if (ttsSpeaking) { stopTts(); return; }
+        if (ttsControls) {
+          ttsControls.hidden = !ttsControls.hidden;
+        }
+      });
+
+      function startTts() {
         var body = document.querySelector('.article-body');
         if (!body) return;
         ttsText = body.innerText;
+        // Cancel then speak immediately (setTimeout breaks user gesture chain in Chrome)
+        window.speechSynthesis.cancel();
         window.speechSynthesis.speak(buildUtterance(ttsText));
         ttsSpeaking = true;
-        if (ttsControls) ttsControls.hidden = false;
         ttsBtn.setAttribute('aria-label', 'Stop reading');
         ttsBtn.classList.add('is-speaking');
-      });
+      }
 
-      /* — Pause / Resume — */
+      /* — Play / Pause / Resume — */
       if (ttsPauseBtn) {
+        // Show play icon initially (not speaking yet)
+        ttsPauseBtn.setAttribute('aria-label', 'Play');
+        ttsPauseBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+
         ttsPauseBtn.addEventListener('click', function () {
-          if (!ttsSpeaking) return;
-          if (ttsPaused) {
+          if (!ttsSpeaking) {
+            // Start playing
+            startTts();
+            ttsPauseBtn.setAttribute('aria-label', 'Pause');
+            ttsPauseBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+          } else if (ttsPaused) {
             window.speechSynthesis.resume();
             ttsPaused = false;
             ttsPauseBtn.setAttribute('aria-label', 'Pause');
@@ -234,6 +340,11 @@
       if (ttsStopBtn) {
         ttsStopBtn.addEventListener('click', stopTts);
       }
+
+      /* — Stop on navigate away — */
+      window.addEventListener('beforeunload', function () {
+        if (ttsSpeaking) window.speechSynthesis.cancel();
+      });
 
       /* — Speed — */
       speedBtns.forEach(function (btn) {
@@ -303,11 +414,10 @@
 
   /* ── Table of contents ────────────────────────────────────── */
   var articleBody = document.querySelector('.article-body');
-  var tocWidget   = document.getElementById('toc-widget');
   var tocNav      = document.getElementById('toc-nav');
   var tocMasthead = document.querySelector('.masthead');
 
-  if (articleBody && tocWidget && tocNav) {
+  if (articleBody && tocNav) {
     var headings = Array.prototype.slice.call(
       articleBody.querySelectorAll('h2, h3')
     );
@@ -346,7 +456,7 @@
       });
 
       tocNav.appendChild(ul);
-      tocWidget.hidden = false;
+      // TOC populated in reader panel
 
       // Scroll spy with IntersectionObserver
       var tocLinks = Array.prototype.slice.call(tocNav.querySelectorAll('.toc-list__link'));
@@ -539,19 +649,16 @@
     }
   }
 
-  /* ── Print footnotes ─────────────────────────────────────── */
+  /* ── Footnotes (visible + print) ─────────────────────────── */
+  var allFnBtns = document.querySelectorAll('.fn-btn');
+  var articleFnEl = document.getElementById('article-footnotes');
   var printFnEl = document.getElementById('print-footnotes');
-  if (printFnEl) {
-    var allFnBtns = document.querySelectorAll('.fn-btn');
-    if (allFnBtns.length) {
-      var fnHeading = document.createElement('p');
-      fnHeading.className = 'print-footnotes__heading';
-      fnHeading.textContent = 'Notes';
-      printFnEl.appendChild(fnHeading);
 
-      var fnList = document.createElement('ol');
-      fnList.className = 'print-footnotes__list';
-
+  if (allFnBtns.length) {
+    // Build footnotes list
+    function buildFnList(className) {
+      var ol = document.createElement('ol');
+      ol.className = className;
       allFnBtns.forEach(function (btn) {
         var contentEl = btn.parentElement.querySelector('.fn-content');
         if (!contentEl) return;
@@ -559,10 +666,39 @@
         var id = btn.getAttribute('data-fn-id');
         if (id) li.setAttribute('value', id);
         li.textContent = contentEl.textContent;
-        fnList.appendChild(li);
+        ol.appendChild(li);
       });
+      return ol;
+    }
 
-      printFnEl.appendChild(fnList);
+    // Visible footnotes section
+    if (articleFnEl) {
+      var fnHeader = document.createElement('div');
+      fnHeader.className = 'article-footnotes__header';
+      fnHeader.innerHTML = '<span class="article-footnotes__title">Footnotes</span>' +
+        '<button class="article-footnotes__toggle" type="button" id="fn-toggle">Hide footnotes</button>';
+      articleFnEl.appendChild(fnHeader);
+
+      var fnBody = document.createElement('div');
+      fnBody.id = 'fn-body';
+      fnBody.appendChild(buildFnList('article-footnotes__list'));
+      articleFnEl.appendChild(fnBody);
+
+      document.getElementById('fn-toggle').addEventListener('click', function () {
+        var body = document.getElementById('fn-body');
+        var hidden = body.hidden;
+        body.hidden = !hidden;
+        this.textContent = hidden ? 'Hide footnotes' : 'Show footnotes';
+      });
+    }
+
+    // Print footnotes
+    if (printFnEl) {
+      var pfnHeading = document.createElement('p');
+      pfnHeading.className = 'print-footnotes__heading';
+      pfnHeading.textContent = 'Notes';
+      printFnEl.appendChild(pfnHeading);
+      printFnEl.appendChild(buildFnList('print-footnotes__list'));
     }
   }
 

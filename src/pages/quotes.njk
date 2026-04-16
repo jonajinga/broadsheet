@@ -27,39 +27,62 @@ permalink: /quotes/
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
 
-  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
-    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Quotes</h1>
+  <header style="padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-10);">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Quotes</h1>
     <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic;">
       A curated collection of freethought quotes.
     </p>
+    <p style="font-family: var(--font-ui); font-size: var(--text-sm); margin-top: var(--space-4);">
+      Know a great quote? <a href="/quotes/submit/" style="color: var(--color-link); font-weight: 600;">Submit it</a>
+    </p>
+    <div style="display:flex;gap:var(--space-3);margin-top:var(--space-4);flex-wrap:wrap;justify-content:center;">
+      <a href="/quotes/timeline/" class="btn">View Timeline</a>
+      <a href="/quotes/showcase/" class="btn">Showcase</a>
+    </div>
   </header>
 
-  <div style="margin-bottom: var(--space-6);">
-    <select id="quotes-author-filter" aria-label="Filter by author" style="padding: var(--space-2) var(--space-3); font-family: var(--font-ui); font-size: var(--text-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-ink);">
+  <div style="display:flex;gap:var(--space-3);margin-bottom:var(--space-6);flex-wrap:wrap;">
+    <select id="quotes-author-filter" aria-label="Filter by author" style="padding:var(--space-2) var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);border:1px solid var(--color-rule);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-ink);">
       <option value="">All authors</option>
       {% set authorSet = [] %}
       {% for q in quotes %}
-        {% if q.author not in authorSet %}
-          {% set authorSet = authorSet.concat([q.author]) %}
-        {% endif %}
+        {% if q.author not in authorSet %}{% set authorSet = authorSet.concat([q.author]) %}{% endif %}
       {% endfor %}
       {% for a in authorSet | sort %}
         <option value="{{ a }}">{{ a }}</option>
       {% endfor %}
     </select>
+    <select id="quotes-tag-filter" aria-label="Filter by topic" style="padding:var(--space-2) var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);border:1px solid var(--color-rule);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-ink);">
+      <option value="">All topics</option>
+      {% set tagSet = [] %}
+      {% for q in quotes %}
+        {% for t in q.tags %}
+          {% if t not in tagSet %}{% set tagSet = tagSet.concat([t]) %}{% endif %}
+        {% endfor %}
+      {% endfor %}
+      {% for t in tagSet | sort %}
+        <option value="{{ t }}">{{ t }}</option>
+      {% endfor %}
+    </select>
+    <select id="quotes-era-filter" aria-label="Filter by era" style="padding:var(--space-2) var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);border:1px solid var(--color-rule);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-ink);">
+      <option value="">All eras</option>
+      {% set eraSet = [] %}
+      {% for q in quotes %}
+        {% if q.era and q.era not in eraSet %}{% set eraSet = eraSet.concat([q.era]) %}{% endif %}
+      {% endfor %}
+      {% for e in eraSet | sort %}
+        <option value="{{ e }}">{{ e }}</option>
+      {% endfor %}
+    </select>
   </div>
 
-  <div aria-hidden="true" style="display:none">
-    <span data-pagefind-meta="section">Quotes</span>
-    <span data-pagefind-filter="section">Quotes</span>
-  </div>
   <style>.quote-card { scroll-margin-top: 8rem; }</style>
-  <div id="quotes-list" data-pagefind-body style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4);">
+  <div id="quotes-list" data-pagefind-ignore style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4);">
     {% for q in quotes %}
-    <blockquote class="quote-card" data-author="{{ q.author }}" id="q{{ loop.index }}" style="margin:0;padding:var(--space-6);border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);display:flex;flex-direction:column;justify-content:space-between;font-style:normal;color:var(--color-ink);gap:var(--space-3);">
-      <p style="font-family:var(--font-body);font-size:var(--text-sm);line-height:var(--leading-loose);color:var(--color-ink);margin:0;">
+    <blockquote class="quote-card" data-author="{{ q.author }}" data-tags="{{ q.tags | join(',') }}" data-era="{{ q.era }}" data-url="/quotes/{{ q | quoteSlug }}/" id="q{{ loop.index }}" style="margin:0;padding:var(--space-6);border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);display:flex;flex-direction:column;justify-content:space-between;font-style:normal;color:var(--color-ink);gap:var(--space-3);">
+      <a href="/quotes/{{ q | quoteSlug }}/" style="font-family:var(--font-body);font-size:var(--text-sm);line-height:var(--leading-loose);color:var(--color-ink);margin:0;text-decoration:none;">
         &ldquo;{{ q.quote }}&rdquo;
-      </p>
+      </a>
       <div>
         <p style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;color:var(--color-ink);margin:0;">{{ q.author }}</p>
         {% if q.source %}<p style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin:0;">{{ q.source }}</p>{% endif %}
@@ -96,16 +119,26 @@ permalink: /quotes/
     }
   }
 
-  // Filter
-  var filter = document.getElementById('quotes-author-filter');
-  if (filter) {
-    filter.addEventListener('change', function () {
-      var author = this.value;
-      document.querySelectorAll('.quote-card').forEach(function (card) {
-        card.style.display = (!author || card.dataset.author === author) ? '' : 'none';
-      });
+  // Filters
+  var authorFilter = document.getElementById('quotes-author-filter');
+  var tagFilter = document.getElementById('quotes-tag-filter');
+  var eraFilter = document.getElementById('quotes-era-filter');
+
+  function filterQuotes() {
+    var author = authorFilter ? authorFilter.value : '';
+    var tag = tagFilter ? tagFilter.value : '';
+    var era = eraFilter ? eraFilter.value : '';
+    document.querySelectorAll('.quote-card').forEach(function (card) {
+      var matchAuthor = !author || card.dataset.author === author;
+      var matchTag = !tag || (card.dataset.tags || '').indexOf(tag) !== -1;
+      var matchEra = !era || card.dataset.era === era;
+      card.style.display = (matchAuthor && matchTag && matchEra) ? '' : 'none';
     });
   }
+
+  if (authorFilter) authorFilter.addEventListener('change', filterQuotes);
+  if (tagFilter) tagFilter.addEventListener('change', filterQuotes);
+  if (eraFilter) eraFilter.addEventListener('change', filterQuotes);
 
   function getQuoteText(btn) {
     var card = btn.closest('.quote-card');

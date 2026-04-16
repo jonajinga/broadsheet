@@ -1,5 +1,5 @@
 [
-  { "quote": "The only way to do great work is to love what you do.", "author": "Steve Jobs", "source": "Stanford Commencement (2005)" },
-  { "quote": "In the middle of difficulty lies opportunity.", "author": "Albert Einstein", "source": "attributed" },
-  { "quote": "The pen is mightier than the sword.", "author": "Edward Bulwer-Lytton", "source": "Richelieu (1839)" }
+  { "quote": "The only way to do great work is to love what you do.", "author": "Steve Jobs", "source": "Stanford Commencement (2005)", "tags": ["work", "passion"], "era": "21st Century" },
+  { "quote": "In the middle of difficulty lies opportunity.", "author": "Albert Einstein", "source": "attributed", "tags": ["resilience", "perspective"], "era": "20th Century" },
+  { "quote": "The pen is mightier than the sword.", "author": "Edward Bulwer-Lytton", "source": "Richelieu (1839)", "tags": ["writing", "power"], "era": "19th Century" }
 ]

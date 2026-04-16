@@ -115,6 +115,9 @@
       <span class="btn-label">Reading</span>
     </button>
     <div id="reading-settings-panel" class="reading-settings-panel" hidden>
+      <button class="rs-panel-close" type="button" aria-label="Close reading settings" onclick="this.parentElement.hidden=true;var b=document.getElementById('reading-settings-btn');if(b)b.setAttribute('aria-expanded','false');">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
       <div class="rs-group">
         <label class="rs-label" for="rs-font-size">Text size</label>
         <div class="rs-size-row">
@@ -124,13 +127,148 @@
         </div>
       </div>
       <div class="rs-group">
-        <p class="rs-label" id="rs-font-label">Font</p>
-        <div class="rs-btngroup" role="group" aria-labelledby="rs-font-label">
-          <button class="rs-btn is-active" data-rs-font="serif" type="button">Serif</button>
-          <button class="rs-btn" data-rs-font="sans" type="button">Sans</button>
-          <button class="rs-btn" data-rs-font="dyslexic" type="button">OpenDyslexic</button>
+        <label class="rs-label" for="rs-font-select">Font</label>
+        <select id="rs-font-select" class="rs-select">
+          <optgroup label="Site fonts">
+            <option value="serif">Source Serif (default)</option>
+            <option value="sans">DM Sans</option>
+            <option value="lora">Lora</option>
+            <option value="playfair">Playfair Display</option>
+          </optgroup>
+          <optgroup label="Serif">
+            <option value="georgia">Georgia</option>
+            <option value="palatino">Palatino</option>
+            <option value="times">Times New Roman</option>
+            <option value="garamond">Garamond</option>
+            <option value="bookman">Bookman Old Style</option>
+          </optgroup>
+          <optgroup label="Sans-serif">
+            <option value="system">System default</option>
+            <option value="arial">Arial / Helvetica</option>
+            <option value="verdana">Verdana</option>
+            <option value="trebuchet">Trebuchet MS</option>
+            <option value="tahoma">Tahoma</option>
+            <option value="century">Century Gothic</option>
+          </optgroup>
+          <optgroup label="Monospace">
+            <option value="mono">SF Mono / Consolas</option>
+            <option value="courier">Courier New</option>
+            <option value="lucida">Lucida Console</option>
+          </optgroup>
+          <optgroup label="Web fonts (loaded on demand)">
+            <option value="inter">Inter</option>
+            <option value="merriweather">Merriweather</option>
+            <option value="roboto">Roboto</option>
+            <option value="opensans">Open Sans</option>
+            <option value="baskerville">Libre Baskerville</option>
+            <option value="crimson">Crimson Pro</option>
+            <option value="ibmplex">IBM Plex Serif</option>
+            <option value="literata">Literata</option>
+            <option value="atkinson">Atkinson Hyperlegible</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label" id="rs-spacing-label">Line spacing</p>
+        <div class="rs-btngroup" role="group" aria-labelledby="rs-spacing-label">
+          <button class="rs-btn rs-icon-btn" data-rs-spacing="tight" type="button" title="Tight" aria-label="Tight">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="11" x2="21" y2="11"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="3" y1="19" x2="21" y2="19"/></svg>
+          </button>
+          <button class="rs-btn rs-icon-btn is-active" data-rs-spacing="normal" type="button" title="Normal" aria-label="Normal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="21" y2="5"/><line x1="3" y1="11" x2="21" y2="11"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+          </button>
+          <button class="rs-btn rs-icon-btn" data-rs-spacing="relaxed" type="button" title="Relaxed" aria-label="Relaxed">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="4" x2="21" y2="4"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+          </button>
+          <button class="rs-btn rs-icon-btn" data-rs-spacing="loose" type="button" title="Loose" aria-label="Loose">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="3" x2="21" y2="3"/><line x1="3" y1="13" x2="21" y2="13"/></svg>
+          </button>
         </div>
       </div>
+      <div class="rs-group">
+        <p class="rs-label" id="rs-width-label">Text width</p>
+        <div class="rs-btngroup" role="group" aria-labelledby="rs-width-label">
+          <button class="rs-btn rs-icon-btn" data-rs-width="narrow" type="button" title="Narrow" aria-label="Narrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="4" x2="17" y2="4"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="14" x2="17" y2="14"/><line x1="7" y1="19" x2="13" y2="19"/></svg>
+          </button>
+          <button class="rs-btn rs-icon-btn is-active" data-rs-width="normal" type="button" title="Normal" aria-label="Normal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="4"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="19" x2="14" y2="19"/></svg>
+          </button>
+          <button class="rs-btn rs-icon-btn" data-rs-width="wide" type="button" title="Wide" aria-label="Wide">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="4" x2="22" y2="4"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="14" x2="22" y2="14"/><line x1="2" y1="19" x2="16" y2="19"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label" id="rs-word-spacing-label">Word spacing</p>
+        <div class="rs-btngroup" role="group" aria-labelledby="rs-word-spacing-label">
+          <button class="rs-btn rs-icon-btn is-active" data-rs-wordspace="normal" type="button" title="Normal" aria-label="Normal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="2" y="7" width="9" height="10" rx="1"/><rect x="13" y="7" width="9" height="10" rx="1"/></svg>
+          </button>
+          <button class="rs-btn rs-icon-btn" data-rs-wordspace="wide" type="button" title="Wide" aria-label="Wide">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="1" y="7" width="8" height="10" rx="1"/><rect x="13" y="7" width="8" height="10" rx="1"/></svg>
+          </button>
+          <button class="rs-btn rs-icon-btn" data-rs-wordspace="wider" type="button" title="Wider" aria-label="Wider">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="1" y="7" width="7" height="10" rx="1"/><rect x="14" y="7" width="7" height="10" rx="1"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="rs-group rs-toggles">
+        <label class="rs-toggle">
+          <input type="checkbox" id="rs-ruler" class="rs-toggle__input">
+          <span class="rs-toggle__label">Reading ruler</span>
+        </label>
+        <div id="rs-ruler-options" hidden style="margin-top:var(--space-2);padding-left:var(--space-1);">
+          <div style="margin-bottom:var(--space-2);">
+            <label style="font-size:var(--text-xs);color:var(--color-ink-faint);display:block;margin-bottom:var(--space-1);">Thickness</label>
+            <input type="range" class="rs-slider" id="rs-ruler-thick" min="1" max="8" step="1" value="2" aria-label="Ruler thickness">
+          </div>
+          <div style="margin-bottom:var(--space-2);">
+            <label style="font-size:var(--text-xs);color:var(--color-ink-faint);display:block;margin-bottom:var(--space-1);">Color</label>
+            <div class="rs-btngroup" role="group">
+              <button class="rs-swatch is-active" data-rs-ruler-color="accent" type="button" style="background:var(--color-accent);" title="Accent" aria-label="Accent"></button>
+              <button class="rs-swatch" data-rs-ruler-color="red" type="button" style="background:#e53e3e;" title="Red" aria-label="Red"></button>
+              <button class="rs-swatch" data-rs-ruler-color="blue" type="button" style="background:#3182ce;" title="Blue" aria-label="Blue"></button>
+              <button class="rs-swatch" data-rs-ruler-color="green" type="button" style="background:#38a169;" title="Green" aria-label="Green"></button>
+              <button class="rs-swatch" data-rs-ruler-color="yellow" type="button" style="background:#d69e2e;" title="Yellow" aria-label="Yellow"></button>
+              <button class="rs-swatch" data-rs-ruler-color="black" type="button" style="background:#111;" title="Black" aria-label="Black"></button>
+              <button class="rs-swatch" data-rs-ruler-color="white" type="button" style="background:#eee;border:1px solid var(--color-rule);" title="White" aria-label="White"></button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:var(--text-xs);color:var(--color-ink-faint);display:block;margin-bottom:var(--space-1);">Style</label>
+            <div class="rs-btngroup" role="group">
+              <button class="rs-btn rs-icon-btn is-active" data-rs-ruler-style="solid" type="button" title="Solid" aria-label="Solid">
+                <svg width="16" height="2" viewBox="0 0 16 2"><line x1="0" y1="1" x2="16" y2="1" stroke="currentColor" stroke-width="2"/></svg>
+              </button>
+              <button class="rs-btn rs-icon-btn" data-rs-ruler-style="dashed" type="button" title="Dashed" aria-label="Dashed">
+                <svg width="16" height="2" viewBox="0 0 16 2"><line x1="0" y1="1" x2="16" y2="1" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2"/></svg>
+              </button>
+              <button class="rs-btn rs-icon-btn" data-rs-ruler-style="dotted" type="button" title="Dotted" aria-label="Dotted">
+                <svg width="16" height="2" viewBox="0 0 16 2"><line x1="0" y1="1" x2="16" y2="1" stroke="currentColor" stroke-width="2" stroke-dasharray="1 2"/></svg>
+              </button>
+              <button class="rs-btn rs-icon-btn" data-rs-ruler-style="glow" type="button" title="Glow" aria-label="Glow">
+                <svg width="16" height="6" viewBox="0 0 16 6"><line x1="0" y1="3" x2="16" y2="3" stroke="currentColor" stroke-width="2" filter="url(#glow2)"/><defs><filter id="glow2"><feGaussianBlur stdDeviation="1" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <label class="rs-toggle">
+          <input type="checkbox" id="rs-para-nums" class="rs-toggle__input">
+          <span class="rs-toggle__label">Paragraph numbers</span>
+        </label>
+      </div>
+      <div class="rs-group" id="rs-autoscroll-group">
+        <label class="rs-toggle">
+          <input type="checkbox" id="rs-autoscroll" class="rs-toggle__input">
+          <span class="rs-toggle__label">Auto-scroll</span>
+        </label>
+        <div id="rs-autoscroll-speed" hidden style="margin-top:var(--space-2);">
+          <input type="range" class="rs-slider" id="rs-scroll-speed" min="1" max="10" step="1" value="3" aria-label="Scroll speed">
+          <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-ink-faint);"><span>Slow</span><span>Fast</span></div>
+        </div>
+      </div>
+      <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetReadingSettings)window.__resetReadingSettings();">Reset to defaults</button>
     </div>
   </div>
 

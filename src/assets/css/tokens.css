@@ -1,5 +1,5 @@
 /* ============================================================
-   THE FREETHINKING TIMES — Design Tokens
+   BROADSHEET — Design Tokens
    All visual variables live here. Edit this file to retheme.
    ============================================================ */
 
@@ -36,6 +36,7 @@
   --color-trials:              #6B2A2A;
   --color-glossary:            #3D5A47;
   --color-bookshelf:           #7A5232;
+  --color-reviews:             #8B6914;
 
   /* ── Typography: Families ──────────────────────────────── */
   --font-masthead:   'Playfair Display', Georgia, serif;
@@ -44,8 +45,8 @@
   --font-ui:         'DM Sans', system-ui, sans-serif;
 
   /* ── Typography: Scale (Major Third — 1.25) ────────────── */
-  --text-xs:    0.64rem;    /*  ~10px */
-  --text-sm:    0.8rem;     /*  ~13px */
+  --text-xs:    0.75rem;    /*  ~12px */
+  --text-sm:    0.875rem;   /*  ~14px */
   --text-base:  1rem;       /*  ~16px */
   --text-md:    1.25rem;    /*  ~20px */
   --text-lg:    1.563rem;   /*  ~25px */
@@ -107,7 +108,7 @@
   --color-bg-inset:     #252525;
   --color-ink:          #E8E4DC;
   --color-ink-muted:    #A8A49C;
-  --color-ink-faint:    #6C6864;
+  --color-ink-faint:    #8A8580;
   --color-rule:         #303030;
   --color-rule-heavy:   #484440;
   --color-accent:       #E05545;
@@ -141,7 +142,7 @@
     --color-bg-inset:     #252525;
     --color-ink:          #E8E4DC;
     --color-ink-muted:    #A8A49C;
-    --color-ink-faint:    #6C6864;
+    --color-ink-faint:    #8A8580;
     --color-rule:         #303030;
     --color-rule-heavy:   #484440;
     --color-accent:       #E05545;

@@ -1,5 +1,5 @@
 /* ============================================================
-   THE FREETHINKING TIMES — Projects
+   BROADSHEET — Projects
    ============================================================ */
 
 /* ── Shared Game Layout ─────────────────────────────────────── */
@@ -152,9 +152,10 @@
 
 .project-section-header h1 {
   font-family: var(--font-masthead);
-  font-size: var(--text-4xl);
+  font-size: clamp(1.8rem, 5vw, 3.815rem);
   margin-bottom: var(--space-4);
   line-height: var(--leading-snug);
+  overflow-wrap: break-word;
 }
 
 .project-section-lede {
@@ -260,6 +261,25 @@
   font-size: var(--text-3xl);
   line-height: var(--leading-snug);
   margin-bottom: var(--space-3);
+}
+
+.glossary-pronounce {
+  background: none;
+  border: 1px solid var(--color-rule);
+  color: var(--color-ink-faint);
+  cursor: pointer;
+  padding: var(--space-1);
+  margin-left: var(--space-2);
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.glossary-pronounce:hover {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
 }
 
 .glossary-etymology {

@@ -1,5 +1,5 @@
 /**
- * The Freethinking Times — Search
+ * Broadsheet — Search
  * Loads Pagefind on demand (after first keystroke) and displays
  * results in a keyboard-navigable modal overlay.
  */
@@ -100,20 +100,63 @@
       const opts = {};
       if (activeSection) opts.filters = { section: activeSection };
       const search = await pagefind.search(query.trim() || null, opts);
-      const data   = await Promise.all(search.results.slice(0, 8).map(r => r.data()));
+      const totalCount = search.results.length;
+      const pageSize = 5;
+      const data = await Promise.all(search.results.slice(0, pageSize).map(r => r.data()));
 
       if (data.length === 0) {
-        results.innerHTML = `<p class="search-notice">No results for <strong>${escapeHtml(query)}</strong>.</p>`;
+        const msg = query.trim()
+          ? `No results for <strong>${escapeHtml(query)}</strong>.`
+          : `No results in <strong>${escapeHtml(activeSection)}</strong>.`;
+        results.innerHTML = `<p class="search-notice">${msg}</p>`;
         return;
       }
 
-      results.innerHTML = data.map(item => `
+      let html = data.map(item => `
         <a class="search-result" href="${item.url}">
           <span class="search-result__meta">${item.meta?.section || ''}</span>
           <span class="search-result__title">${item.meta?.title || 'Untitled'}</span>
           <span class="search-result__excerpt">${item.excerpt}</span>
         </a>
       `).join('');
+
+      // Show more button if there are additional results
+      if (totalCount > pageSize) {
+        html += `<div class="search-more">
+          <button class="search-more__btn" type="button" id="search-show-more" data-shown="${pageSize}" data-total="${totalCount}">
+            Show more (${totalCount - pageSize} remaining)
+          </button>
+          <a class="search-more__link" href="/search/?q=${encodeURIComponent(query.trim())}${activeSection ? '&section=' + encodeURIComponent(activeSection) : ''}">
+            View all on search page →
+          </a>
+        </div>`;
+      }
+
+      results.innerHTML = html;
+
+      // Bind show more button
+      const moreBtn = document.getElementById('search-show-more');
+      if (moreBtn) {
+        moreBtn.addEventListener('click', async function () {
+          const shown = parseInt(moreBtn.dataset.shown, 10);
+          const nextBatch = await Promise.all(search.results.slice(shown, shown + pageSize).map(r => r.data()));
+          const newShown = shown + nextBatch.length;
+          const moreHtml = nextBatch.map(item => `
+            <a class="search-result" href="${item.url}">
+              <span class="search-result__meta">${item.meta?.section || ''}</span>
+              <span class="search-result__title">${item.meta?.title || 'Untitled'}</span>
+              <span class="search-result__excerpt">${item.excerpt}</span>
+            </a>
+          `).join('');
+          moreBtn.parentElement.insertAdjacentHTML('beforebegin', moreHtml);
+          moreBtn.dataset.shown = newShown;
+          if (newShown >= totalCount) {
+            moreBtn.parentElement.remove();
+          } else {
+            moreBtn.textContent = `Show more (${totalCount - newShown} remaining)`;
+          }
+        });
+      }
     } catch (e) {
       results.innerHTML = '<p class="search-notice">Search error. Please try again.</p>';
     }
@@ -171,6 +214,61 @@
 
   function escapeHtml(str) {
     return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ── Voice Search (Web Speech API) ──────────────────────────────
+  const voiceBtn = document.getElementById('voice-search-btn');
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (voiceBtn && SpeechRecognition) {
+    voiceBtn.hidden = false;
+    let listening = false;
+    let recognition = null;
+
+    voiceBtn.addEventListener('click', function () {
+      if (listening) {
+        recognition.stop();
+        return;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = function () {
+        listening = true;
+        voiceBtn.classList.add('is-listening');
+        voiceBtn.setAttribute('aria-label', 'Stop voice search');
+        input.placeholder = 'Listening…';
+      };
+
+      recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      };
+
+      recognition.onend = function () {
+        listening = false;
+        voiceBtn.classList.remove('is-listening');
+        voiceBtn.setAttribute('aria-label', 'Search by voice');
+        input.placeholder = 'Search articles, topics, authors…';
+      };
+
+      recognition.onerror = function (e) {
+        listening = false;
+        voiceBtn.classList.remove('is-listening');
+        input.placeholder = 'Search articles, topics, authors…';
+        if (e.error === 'not-allowed') {
+          voiceBtn.hidden = true;
+        }
+      };
+
+      // Open search if not already open
+      if (!modal.classList.contains('is-open')) openSearch();
+      recognition.start();
+    });
   }
 
 })();

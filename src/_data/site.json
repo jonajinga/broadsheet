@@ -8,16 +8,20 @@
   "founded": 2026,
   "storagePrefix": "bs",
   "fontsUrl": "https://fonts.bunny.net/css?family=dm-sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=playfair-display:ital,wght@0,700;0,900;1,700&family=source-serif-4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap",
+  "forms": {
+    "provider": "web3forms",
+    "accessKey": "YOUR_WEB3FORMS_ACCESS_KEY"
+  },
   "gtranslate": false,
   "analytics": {
     "provider": "umami",
     "websiteId": "",
-    "scriptUrl": "",
+    "scriptUrl": "https://cloud.umami.is/script.js",
     "dashboardUrl": ""
   },
   "newsletter": {
     "provider": "buttondown",
-    "username": "your-username"
+    "username": ""
   },
   "comments": {
     "provider": "cusdis",
@@ -27,7 +31,13 @@
   "nav": [
     { "label": "News",           "url": "/news/",              "key": "news",         "collection": "news" },
     { "label": "Opinion",        "url": "/opinion/",           "key": "opinion",      "collection": "opinion" },
-    { "label": "Analysis",       "url": "/analysis/",          "key": "analysis",     "collection": "analysis" }
+    { "label": "Analysis",       "url": "/analysis/",          "key": "analysis",     "collection": "analysis" },
+    { "label": "Arts & Culture", "url": "/arts-culture/",      "key": "arts-culture", "collection": "arts-culture" },
+    { "label": "Science & Tech", "url": "/science-technology/", "key": "science-tech", "collection": "science-technology" },
+    { "label": "History",        "url": "/history/",           "key": "history",      "collection": "history" },
+    { "label": "Letters",        "url": "/letters/",           "key": "letters",      "collection": "letters" },
+    { "label": "Reviews",        "url": "/reviews/",           "key": "reviews",      "collection": "reviews" },
+    { "label": "More",           "url": "/more/",              "key": "more",         "type": "more" }
   ],
   "social": {
     "twitter": "",
@@ -37,6 +47,15 @@
   "sections": {
     "news": { "label": "News", "color": "#C0392B", "description": "Breaking news and reported stories." },
     "opinion": { "label": "Opinion", "color": "#2C5F8A", "description": "Columns, essays, and editorials." },
-    "analysis": { "label": "Analysis", "color": "#5D4037", "description": "Deep dives and investigation." }
+    "analysis": { "label": "Analysis", "color": "#5D4037", "description": "Deep dives and investigation." },
+    "arts-culture": { "label": "Arts & Culture", "color": "#6A1B9A", "description": "Books, film, music, and ideas." },
+    "science-technology": { "label": "Science & Tech", "color": "#1B5E20", "description": "Science and technology reporting." },
+    "history": { "label": "History", "color": "#BF8C00", "description": "Context and consequence across time." },
+    "letters": { "label": "Letters", "color": "#37474F", "description": "Reader responses and correspondence." },
+    "reviews": { "label": "Reviews", "color": "#8B6914", "description": "Books, films, podcasts, and documentaries." },
+    "thought-experiments": { "label": "Thought Experiments", "color": "#1D5C6E", "description": "Classic thought experiments examined." },
+    "trials-of-thought": { "label": "Trials of Thought", "color": "#6B2A2A", "description": "Landmark trials where ideas were the defendant." },
+    "glossary": { "label": "Glossary", "color": "#3D5A47", "description": "Key terms defined clearly." },
+    "bookshelf": { "label": "Bookshelf", "color": "#7A5232", "description": "A curated, annotated reading list." }
   }
 }

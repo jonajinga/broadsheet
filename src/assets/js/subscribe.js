@@ -1,5 +1,5 @@
 /**
- * The Freethinking Times — Email Subscribe
+ * Broadsheet — Email Subscribe
  *
  * Handles Buttondown newsletter subscription forms.
  * Works with any number of .subscribe-form elements on the page.
