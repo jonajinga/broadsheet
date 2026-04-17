@@ -1,5 +1,5 @@
 /**
- * Broadsheet — Public Domain Library
+ * The Freethinking Times — Public Domain Library
  * Modules: ReadingPosition, ChapterCompletion, Bookmarks, Annotations
  * Context is read from #library-context (data-work-slug, data-chapter-slug, data-chapter-title).
  */
@@ -409,6 +409,8 @@
       panel.setAttribute('aria-hidden', 'true');
       if (panelOverlay) panelOverlay.setAttribute('aria-hidden', 'true');
       panelToggles.forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
+      // Safety: clear any lingering scroll-lock
+      if (document.body.style.overflow === 'hidden') document.body.style.overflow = '';
     }
 
     panelToggles.forEach(function (btn) {

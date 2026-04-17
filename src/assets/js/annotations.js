@@ -502,6 +502,9 @@
       panel.setAttribute('aria-hidden', 'true');
       if (panelOverlay) panelOverlay.setAttribute('aria-hidden', 'true');
       panelToggles.forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
+      // Safety: clear any lingering scroll-lock set by another widget (nav
+      // drawer, search modal) whose close handler was skipped.
+      if (document.body.style.overflow === 'hidden') document.body.style.overflow = '';
       try { localStorage.setItem(PANEL_KEY, 'closed'); } catch (e) {}
     }
 
@@ -611,7 +614,7 @@
       var notes = all.filter(function (a) { return !!a.note; });
       var w = window.open('', '_blank');
       var html = '<html><head><title>Notes — ' + pageTitle + '</title><style>body{font-family:Georgia,serif;max-width:600px;margin:2rem auto;color:#1a1a1a;}h1{font-size:1.4rem;}h2{font-size:1.1rem;margin-top:2rem;border-bottom:2px solid #000;padding-bottom:0.3rem;}blockquote{border-left:3px solid #c0392b;padding-left:1rem;margin:0.75rem 0;font-style:italic;}.note{color:#333;font-size:0.9rem;margin:0.25rem 0 0.75rem 1rem;}.date{color:#888;font-size:0.8rem;margin:0.2rem 0 0.75rem;}</style></head><body>';
-      html += '<p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin:0 0 0.5rem;">Broadsheet</p>';
+      html += '<p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin:0 0 0.5rem;">The Freethinking Times</p>';
       html += '<h1>' + pageTitle + '</h1>';
       html += '<p style="color:#888;font-size:0.85rem;margin-bottom:1.5rem;">' + location.origin + pageUrl + '</p>';
 
