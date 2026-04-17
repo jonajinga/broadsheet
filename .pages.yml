@@ -1,5 +1,13 @@
 # Pages CMS Configuration
 # https://pagescms.org/docs/configuration/
+#
+# This file defines all content collections editable via Pages CMS. Each
+# collection maps to a folder under src/content/ (articles) or a top-level
+# project folder (glossary, bookshelf, thought-experiments, trials, library).
+#
+# For forks: the default `author` value below (`jon-ajinga`) must match an
+# entry in src/_data/authors.json — change it to your own author slug when
+# you set up your fork, or remove the default and make the field required.
 
 media:
   input: src/assets/img
@@ -17,15 +25,25 @@ content:
       - { name: title, type: string, required: true }
       - { name: description, type: text, required: true }
       - { name: section, type: string, default: News, hidden: true }
-      - { name: author, type: string, default: editor }
+      - { name: author, type: string, default: editor }  # forks: change to your own authors.json slug
       - { name: authorName, type: string, default: "Your Name" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: image, type: image }
       - { name: imageAlt, type: string }
+      - name: attachments
+        type: object
+        list: true
+        label: "File attachments"
+        fields:
+          - { name: name, type: string, required: true, label: "File name" }
+          - { name: path, type: string, required: true, label: "File path or URL" }
+          - { name: description, type: string, label: "Description" }
       - { name: body, type: rich-text }
 
   - name: opinion
@@ -41,8 +59,10 @@ content:
       - { name: author, type: string, default: editor }
       - { name: authorName, type: string, default: "Your Name" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -60,8 +80,10 @@ content:
       - { name: author, type: string, default: editor }
       - { name: authorName, type: string, default: "Your Name" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -79,8 +101,10 @@ content:
       - { name: author, type: string, default: editor }
       - { name: authorName, type: string, default: "Your Name" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -98,8 +122,10 @@ content:
       - { name: author, type: string, default: editor }
       - { name: authorName, type: string, default: "Your Name" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -117,8 +143,10 @@ content:
       - { name: author, type: string, default: editor }
       - { name: authorName, type: string, default: "Your Name" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -136,8 +164,10 @@ content:
       - { name: author, type: string, default: editor }
       - { name: authorName, type: string, default: "Your Name" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -155,12 +185,14 @@ content:
       - { name: author, type: string, default: editor }
       - { name: authorName, type: string, default: "Your Name" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: mediaType, type: select, options: [Book, Film, Podcast, Documentary, Series], required: true }
       - { name: creator, type: string, required: true, label: "Creator / Director / Author" }
       - { name: year, type: number, label: "Year of release" }
       - { name: rating, type: number, label: "Rating (1-5)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -222,6 +254,7 @@ content:
       - { name: section, type: string, default: "Thought Experiments", hidden: true }
       - { name: author, type: string, default: staff }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: philosopher, type: string, label: "Philosopher / originator" }
       - { name: yearProposed, type: string, label: "Year proposed" }
       - { name: field, type: string, label: "Field (e.g. Epistemology, Ethics)" }
@@ -240,6 +273,7 @@ content:
       - { name: section, type: string, default: "Trials of Thought", hidden: true }
       - { name: author, type: string, default: staff }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: year, type: number, label: "Year of trial" }
       - { name: yearLabel, type: string, label: "Year label (display)" }
       - { name: jurisdiction, type: string }
@@ -330,6 +364,7 @@ content:
     fields:
       - { name: name, type: string, required: true }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: endDate, type: date, label: "End date" }
       - { name: location, type: string }
       - { name: region, type: select, options: [National, Northeast, Southeast, Midwest, Southwest, West, Pacific, International, Online] }
@@ -372,6 +407,7 @@ content:
     list: true
     fields:
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: title, type: string, required: true }
       - name: sections
         type: object
