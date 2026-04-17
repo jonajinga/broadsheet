@@ -1,5 +1,5 @@
 /**
- * Broadsheet — Reading Settings
+ * The Freethinking Times — Reading Settings
  * Font size, font choice, line spacing, text width, word spacing,
  * background presets, reading ruler, paragraph numbers, auto-scroll.
  * All preferences stored in localStorage.

@@ -44,6 +44,7 @@ module.exports = function (eleventyConfig) {
   });
   // robots.txt is now a Nunjucks template (robots.njk)
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
+  eleventyConfig.addPassthroughCopy({ "src/_headers": "_headers" });
 
   // ─── Watch Targets ──────────────────────────────────────────────────────────
   eleventyConfig.addWatchTarget("src/assets/css/");
@@ -178,11 +179,16 @@ module.exports = function (eleventyConfig) {
     key => !["thought-experiments", "trials-of-thought", "glossary", "bookshelf"].includes(key)
   );
 
+  // Scheduled publishing: exclude articles with future dates (unless SHOW_FUTURE env var set)
+  const NOW = new Date();
+  const SHOW_FUTURE = process.env.SHOW_FUTURE === "1";
+  const isNotFuture = (item) => SHOW_FUTURE || item.date <= NOW;
+
   // All content across every section, newest first
   eleventyConfig.addCollection("allContent", (collectionApi) => {
     return collectionApi
       .getFilteredByGlob("src/content/**/*.md")
-      .filter(item => !item.data.draft)
+      .filter(item => !item.data.draft && isNotFuture(item))
       .sort((a, b) => b.date - a.date);
   });
 
@@ -190,7 +196,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addCollection("featured", (collectionApi) => {
     return collectionApi
       .getFilteredByGlob("src/content/**/*.md")
-      .filter(item => item.data.featured && !item.data.draft)
+      .filter(item => item.data.featured && !item.data.draft && isNotFuture(item))
       .sort((a, b) => b.date - a.date);
   });
 
@@ -199,7 +205,7 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addCollection(section, (collectionApi) => {
       return collectionApi
         .getFilteredByGlob(`src/content/${section}/*.md`)
-        .filter(item => !item.data.draft)
+        .filter(item => !item.data.draft && isNotFuture(item))
         .sort((a, b) => b.date - a.date);
     });
   });
@@ -279,6 +285,91 @@ module.exports = function (eleventyConfig) {
       groups[dateStr].articles.push(item);
     });
     return Object.values(groups).sort((a, b) => b.date.localeCompare(a.date));
+  });
+
+  // Per-author productivity stats: [{ name, count, totalWords, avgWords, sections }]
+  // Reads raw Markdown source (strips front matter) to avoid templateContent
+  // being unavailable at the time this filter runs.
+  eleventyConfig.addFilter("authorStats", (allContent) => {
+    const stats = {};
+    allContent.forEach(item => {
+      const name = item.data.authorName || item.data.author || "Unknown";
+      if (!stats[name]) stats[name] = { name, count: 0, totalWords: 0, sections: new Set() };
+      stats[name].count++;
+      let words = 0;
+      try {
+        if (item.inputPath && fs.existsSync(item.inputPath)) {
+          const raw = fs.readFileSync(item.inputPath, "utf8");
+          const body = raw.replace(/^---[\s\S]*?---/, ""); // strip front matter
+          words = body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+        }
+      } catch (e) { /* ignore */ }
+      stats[name].totalWords += words;
+      if (item.data.section) stats[name].sections.add(item.data.section);
+    });
+    return Object.values(stats).map(s => ({
+      name: s.name,
+      count: s.count,
+      totalWords: s.totalWords,
+      avgWords: s.count > 0 ? Math.round(s.totalWords / s.count) : 0,
+      sections: Array.from(s.sections).join(", ")
+    })).sort((a, b) => b.count - a.count);
+  });
+
+  // Status counts for a collection
+  eleventyConfig.addFilter("statusCounts", (allContent) => {
+    const counts = { draft: 0, review: 0, published: 0 };
+    allContent.forEach(item => {
+      if (item.data.status === "draft" || item.data.draft) counts.draft++;
+      else if (item.data.status === "review") counts.review++;
+      else counts.published++;
+    });
+    return counts;
+  });
+
+  // Serialize value as JSON (pretty-printed for readability)
+  eleventyConfig.addFilter("toJSON", (value) => JSON.stringify(value, null, 2));
+
+  // Transform a collection into API records — each item as { ...frontMatter, url }
+  // Strips Eleventy internals like `collections`, `eleventy`, `page`, etc.
+  eleventyConfig.addFilter("toApiItems", (items, baseUrl) => {
+    const strip = new Set(["collections", "eleventy", "page", "pagination", "pkg", "tags", "layout", "permalink", "eleventyComputed", "eleventyExcludeFromCollections", "site", "authors", "quotes", "videos", "events", "timeline", "feeds", "changelog", "gallery", "playlists", "songs", "library", "projects"]);
+    return items.map(item => {
+      const out = { url: (baseUrl || "") + (item.url || "") };
+      Object.keys(item.data || {}).forEach(k => {
+        if (!strip.has(k) && typeof item.data[k] !== "function") {
+          out[k] = item.data[k];
+        }
+      });
+      return out;
+    });
+  });
+
+  // Transform a content collection into API-ready article records
+  eleventyConfig.addFilter("toApiArticles", (items, baseUrl) => {
+    return items.map(item => ({
+      title: item.data.title || "",
+      description: item.data.description || "",
+      url: (baseUrl || "") + (item.url || ""),
+      slug: item.fileSlug || "",
+      section: item.data.section || "",
+      author: item.data.authorName || item.data.author || "",
+      date: item.date ? item.date.toISOString().slice(0, 10) : "",
+      tags: item.data.tags || [],
+      featured: !!item.data.featured
+    }));
+  });
+
+  // Filter a collection by status (draft / review / published)
+  eleventyConfig.addFilter("byStatus", (allContent, status) => {
+    return allContent.filter(item => {
+      const isDraft = item.data.status === "draft" || item.data.draft;
+      const isReview = item.data.status === "review";
+      if (status === "draft") return isDraft;
+      if (status === "review") return isReview && !isDraft;
+      if (status === "published") return !isDraft && !isReview;
+      return false;
+    });
   });
 
   // Primary source documents library, newest first
