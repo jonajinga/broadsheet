@@ -2,13 +2,53 @@
   "editor": {
     "name": "Your Name",
     "slug": "editor",
+    "role": "Editor",
+    "title": "",
+    "location": "",
     "bio": "Editor and founder.",
-    "role": "Editor"
+    "bioLong": "",
+    "photo": "",
+    "social": {
+      "x": "",
+      "bluesky": "",
+      "mastodon": "",
+      "linkedin": "",
+      "github": "",
+      "threads": "",
+      "instagram": "",
+      "website": "",
+      "email": ""
+    },
+    "tipping": {
+      "kofi": "",
+      "bmac": "",
+      "patreon": ""
+    }
   },
   "staff": {
     "name": "Staff",
     "slug": "staff",
+    "role": "Staff",
+    "title": "",
+    "location": "",
     "bio": "Editorial staff.",
-    "role": "Staff"
+    "bioLong": "",
+    "photo": "",
+    "social": {
+      "x": "",
+      "bluesky": "",
+      "mastodon": "",
+      "linkedin": "",
+      "github": "",
+      "threads": "",
+      "instagram": "",
+      "website": "",
+      "email": ""
+    },
+    "tipping": {
+      "kofi": "",
+      "bmac": "",
+      "patreon": ""
+    }
   }
 }

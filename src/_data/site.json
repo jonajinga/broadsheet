@@ -28,6 +28,11 @@
     "appId": "",
     "host": "https://cusdis.com"
   },
+  "tipping": {
+    "kofi": "",
+    "bmac": "",
+    "patreon": ""
+  },
   "nav": [
     { "label": "News",           "url": "/news/",              "key": "news",         "collection": "news" },
     { "label": "Opinion",        "url": "/opinion/",           "key": "opinion",      "collection": "opinion" },
