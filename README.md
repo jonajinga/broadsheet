@@ -20,7 +20,7 @@ Most publishing platforms force a choice: simplicity (but no control) or power (
 |---|---|---|---|---|
 | **Cost** | Free forever | $9-199/mo | Hosting + plugins | Free |
 | **Database** | None | MySQL | MySQL | None |
-| **Reader tools** | TTS, annotations, highlights, reading list, notes, bookmarks, focus mode, 27 fonts, reading ruler | None | Via plugins | None |
+| **Reader tools** | Annotations, highlights, reading list, notes, bookmarks, focus mode, 27 fonts, reading ruler | None | Via plugins | None |
 | **Search** | Built-in (Pagefind) | Built-in | Via plugins | Via plugins |
 | **Dark mode** | Built-in | Theme-dependent | Via plugins | Theme-dependent |
 | **Offline support** | PWA with service worker | No | No | No |
@@ -50,13 +50,11 @@ Most publishing platforms force a choice: simplicity (but no control) or power (
 - **27 font choices** (system + Bunny web fonts loaded on demand)
 - **Global display settings** — font, size, spacing, theme (light/sepia/cream/dark)
 - **Per-page reading settings** — font, size, spacing, width, reading ruler, auto-scroll
-- **Text-to-speech** with synced word highlighting (Chrome, Edge)
 - **6 highlight colours** with WYSIWYG rich-text note editor
 - **Reading ruler** — customisable thickness, colour, and style
 - **Focus mode** — dim everything except the article
 - **Reading list** — save articles for later
 - **Import/export** all reader data as JSON (no accounts needed)
-- **Voice search** and form dictation via Web Speech API
 
 ### Infrastructure
 - **Full-text search** via Pagefind with section filtering, autocomplete, and recent searches
@@ -190,7 +188,7 @@ src/
 │   └── partials/     # header, footer, article-card, subscribe, etc.
 ├── assets/
 │   ├── css/          # tokens, base, layout, components, article, library
-│   └── js/           # search, annotations, TTS, music player, SPA nav, etc.
+│   └── js/           # search, annotations, music player, SPA nav, etc.
 ├── content/          # Articles by section (news, opinion, analysis, etc.)
 ├── library/          # Public domain works with chapters
 ├── glossary/         # A-Z glossary terms (Markdown)

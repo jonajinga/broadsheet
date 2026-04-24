@@ -1441,8 +1441,7 @@
 }
 .annotation-toolbar .article-action-btn[aria-pressed="true"],
 .annotation-toolbar .article-action-btn.is-active,
-.annotation-toolbar .article-action-btn.is-saved,
-.annotation-toolbar .article-action-btn.is-speaking {
+.annotation-toolbar .article-action-btn.is-saved {
   background: rgba(255,255,255,0.2);
   color: #fff;
 }

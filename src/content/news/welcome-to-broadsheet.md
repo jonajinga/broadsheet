@@ -21,7 +21,7 @@ Broadsheet gives you a complete publication system out of the box:
 - **7 editorial sections** with per-section collections and RSS feeds
 - **Full-text search** via Pagefind with section filtering
 - **Dark mode** with system preference detection
-- **Reader tools** including text-to-speech, focus mode, reading settings, highlights, annotations, bookmarks, downloads, print, and citations
+- **Reader tools** including focus mode, reading settings, highlights, annotations, bookmarks, downloads, print, and citations
 - **Public domain library** with chapter navigation and reading progress
 - **Quotes page** with save, share, and copy functionality
 - **Video library** for curated embedded content

@@ -5,7 +5,7 @@
  * (hidden via CSS) so existing scripts (reading-settings.js, download.js,
  * progress.js, reading-list.js) keep wiring up by ID. This script:
  *
- *   - moves Save / Listen / Focus / Feedback buttons into the bottom toolbar
+ *   - moves Save / Focus / Feedback buttons into the bottom toolbar
  *   - moves Reading-settings panel into the Reader panel's Display tab
  *   - moves share-panel / download-panel into the Share popover
  *   - wires the Share and Print popovers (toggle + close-on-outside)
@@ -24,9 +24,8 @@
   var toolbar = document.getElementById('annotation-toolbar');
   if (!panel && !toolbar) return;
 
-  // ── Bottom toolbar slots (Save / Listen / Focus stay here)
+  // ── Bottom toolbar slots (Save / Focus stay here)
   move('bookmark-btn', 'ann-save-slot');
-  move('tts-btn',      'ann-listen-slot');
   move('focus-btn',    'ann-focus-slot');
 
   // Hide the panel-footer "Comments" button if the page has no comments

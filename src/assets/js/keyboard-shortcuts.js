@@ -5,7 +5,6 @@
  *   /   Focus the search input (wherever it is on the page)
  *   r   Toggle the reader panel (highlights / notes / bookmarks / related)
  *   f   Toggle focus mode
- *   t   Read aloud — toggle text-to-speech
  *   g   Go to top / go to bottom (g g for top, G for bottom)
  *   n   Next article in the section (when on an article page)
  *   p   Previous article in the section
@@ -52,12 +51,6 @@
 
   function toggleFocusMode() {
     var btn = document.getElementById('focus-btn');
-    if (btn) { btn.click(); return true; }
-    return false;
-  }
-
-  function toggleTTS() {
-    var btn = document.getElementById('tts-btn');
     if (btn) { btn.click(); return true; }
     return false;
   }
@@ -126,7 +119,6 @@
     // Single-letter shortcuts
     if (k === 'r') { if (toggleReaderPanel()) e.preventDefault(); return; }
     if (k === 'f') { if (toggleFocusMode()) e.preventDefault(); return; }
-    if (k === 't') { if (toggleTTS()) e.preventDefault(); return; }
     if (k === 'n') { if (gotoAdjacent('next')) e.preventDefault(); return; }
     if (k === 'p') { if (gotoAdjacent('prev')) e.preventDefault(); return; }
   });
@@ -150,7 +142,6 @@
           row('/', 'Search') +
           row('r', 'Toggle reader panel') +
           row('f', 'Toggle focus mode') +
-          row('t', 'Read aloud (text-to-speech)') +
           row('n', 'Next article') +
           row('p', 'Previous article') +
           row('g g', 'Scroll to top') +

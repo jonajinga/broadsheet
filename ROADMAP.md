@@ -8,7 +8,7 @@ This document outlines the current state and planned direction for Broadsheet. F
 
 Everything listed on the [README](README.md) is shipped and working:
 - Editorial sections with pagination, RSS, and per-author feeds
-- Full reader tools suite (TTS, annotations, highlights, notes, bookmarks, reading ruler, 27 fonts, focus mode)
+- Full reader tools suite (annotations, highlights, notes, bookmarks, reading ruler, 27 fonts, focus mode)
 - Public domain library with chapter navigation
 - Full-text search with autocomplete and section filtering
 - Dark mode, SPA navigation, offline support (PWA)
